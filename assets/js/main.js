@@ -11,7 +11,8 @@ const CONFIG = {
     "dark-night-journal": "https://gumroad.com/l/REPLACE_ME_JOURNAL_DIGITAL"
   },
 
-  // Stripe Payment Links — key matches the data-stripe attribute in books.html
+  // Stripe Payment Links for physical items sold outside the Shirts grid
+  // (the journal's physical edition, self-fulfilled from held inventory)
   stripeLinks: {
     "dark-night-journal": "https://buy.stripe.com/REPLACE_ME_JOURNAL_PHYSICAL"
   },
@@ -24,24 +25,33 @@ const CONFIG = {
       id: "dark-night",
       name: "Dark Night",
       price: "$18",
-      img: "/assets/img/shirt-dark-night.png",
       stripeLink: "https://buy.stripe.com/REPLACE_ME_DARK_NIGHT",
+      colors: [
+        { name: "White", front: "/assets/img/shirt-dark-night-white-front.png", back: "/assets/img/shirt-dark-night-white-back.png" },
+        { name: "Black", front: "/assets/img/shirt-dark-night-black-front.png", back: "/assets/img/shirt-dark-night-black-back.png" }
+      ],
       sizes: { S: true, M: true, L: true, XL: true }
     },
     {
       id: "meditation-is-suspect",
       name: "Meditation Is Suspect",
       price: "$18",
-      img: "/assets/img/shirt-meditation.png",
       stripeLink: "https://buy.stripe.com/REPLACE_ME_MEDITATION",
+      colors: [
+        { name: "White", front: "/assets/img/shirt-meditation-white-front.png", back: "/assets/img/shirt-meditation-white-back.png" },
+        { name: "Black", front: "/assets/img/shirt-meditation-black-front.png", back: "/assets/img/shirt-meditation-black-back.png" }
+      ],
       sizes: { S: true, M: true, L: true, XL: true }
     },
     {
       id: "healing-now",
       name: "Healing Now",
       price: "$18",
-      img: "/assets/img/shirt-healing-now.png",
       stripeLink: "https://buy.stripe.com/REPLACE_ME_HEALING_NOW",
+      colors: [
+        { name: "White", front: "/assets/img/shirt-healing-white-front.png", back: "/assets/img/shirt-healing-white-back.png" },
+        { name: "Black", front: "/assets/img/shirt-healing-black-front.png", back: "/assets/img/shirt-healing-black-back.png" }
+      ],
       sizes: { S: true, M: true, L: true, XL: true }
     }
   ]
@@ -54,7 +64,7 @@ document.querySelectorAll('[data-gumroad]').forEach(function (el) {
   if (url) el.setAttribute('href', url);
 });
 
-// ---------- Wire up Stripe buttons on Books page ----------
+// ---------- Wire up Stripe links for non-shirt physical items (e.g. journal) ----------
 document.querySelectorAll('[data-stripe]').forEach(function (el) {
   const key = el.getAttribute('data-stripe');
   const url = CONFIG.stripeLinks[key];
@@ -64,7 +74,7 @@ document.querySelectorAll('[data-stripe]').forEach(function (el) {
 // ---------- Render shirt cards on Shirts page ----------
 const shirtGrid = document.getElementById('shirt-grid');
 if (shirtGrid) {
-  shirtGrid.innerHTML = CONFIG.shirts.map(function (shirt) {
+  shirtGrid.innerHTML = CONFIG.shirts.map(function (shirt, shirtIndex) {
     const sizePills = Object.keys(shirt.sizes).map(function (size) {
       const inStock = shirt.sizes[size];
       return '<span class="size-pill' + (inStock ? '' : ' sold-out') + '">' + size + '</span>';
@@ -72,15 +82,23 @@ if (shirtGrid) {
 
     const allSoldOut = Object.values(shirt.sizes).every(function (v) { return v === false; });
 
+    const swatches = shirt.colors.map(function (c, colorIndex) {
+      return '<button type="button" class="color-swatch' + (colorIndex === 0 ? ' is-active' : '') +
+        '" data-shirt="' + shirtIndex + '" data-color="' + colorIndex + '" ' +
+        'style="background:' + (c.name === 'White' ? '#fff' : '#111') + ';" ' +
+        'title="' + c.name + '"></button>';
+    }).join('');
+
     return (
-      '<div class="shirt-card">' +
+      '<div class="shirt-card" data-shirt-card="' + shirtIndex + '">' +
         '<div class="shirt-photo">' +
-          '<img src="' + shirt.img + '" alt="' + shirt.name + ' shirt" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
-          '<div class="photo-placeholder" style="display:flex; align-items:center;">drop ' + shirt.img.split('/').pop() + ' in /assets/img/</div>' +
+          '<img data-shirt-img="' + shirtIndex + '" src="' + shirt.colors[0].front + '" alt="' + shirt.name + ' shirt">' +
+          '<button type="button" class="flip-btn" data-shirt-flip="' + shirtIndex + '" title="See back">↻ back</button>' +
         '</div>' +
         '<div class="shirt-body">' +
           '<h3>' + shirt.name + '</h3>' +
           '<p class="price">' + shirt.price + '</p>' +
+          '<div class="swatch-row">' + swatches + '</div>' +
           '<div class="size-row">' + sizePills + '</div>' +
           '<a href="' + (allSoldOut ? '#' : shirt.stripeLink) + '" class="btn' + (allSoldOut ? ' is-disabled' : '') + '">' +
             (allSoldOut ? 'Sold Out' : 'Buy — ' + shirt.price) +
@@ -89,6 +107,37 @@ if (shirtGrid) {
       '</div>'
     );
   }).join('');
+
+  // Track current color + face (front/back) per shirt card
+  const shirtState = CONFIG.shirts.map(function () { return { color: 0, face: 'front' }; });
+
+  shirtGrid.addEventListener('click', function (e) {
+    const swatchBtn = e.target.closest('.color-swatch');
+    if (swatchBtn) {
+      const shirtIdx = Number(swatchBtn.getAttribute('data-shirt'));
+      const colorIdx = Number(swatchBtn.getAttribute('data-color'));
+      shirtState[shirtIdx].color = colorIdx;
+      updateShirtImg(shirtIdx);
+      shirtGrid.querySelectorAll('[data-shirt-card="' + shirtIdx + '"] .color-swatch').forEach(function (b) {
+        b.classList.toggle('is-active', Number(b.getAttribute('data-color')) === colorIdx);
+      });
+      return;
+    }
+    const flipBtn = e.target.closest('.flip-btn');
+    if (flipBtn) {
+      const shirtIdx = Number(flipBtn.getAttribute('data-shirt-flip'));
+      shirtState[shirtIdx].face = shirtState[shirtIdx].face === 'front' ? 'back' : 'front';
+      flipBtn.textContent = shirtState[shirtIdx].face === 'front' ? '↻ back' : '↻ front';
+      updateShirtImg(shirtIdx);
+    }
+  });
+
+  function updateShirtImg(shirtIdx) {
+    const state = shirtState[shirtIdx];
+    const color = CONFIG.shirts[shirtIdx].colors[state.color];
+    const img = shirtGrid.querySelector('[data-shirt-img="' + shirtIdx + '"]');
+    if (img) img.setAttribute('src', color[state.face]);
+  }
 }
 
 // ---------- Handwritten interruption — a different one on every reload ----------

@@ -632,11 +632,25 @@ button { font-family: inherit; cursor: pointer; }
 .book-body .price { font-weight: 700; margin: 4px 0 8px; }
 .book-body .btn { margin-top: auto; justify-content: center; }
 
+/* dual-edition product (e.g. journal: physical + digital) */
+.edition-row {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+.edition-row .btn { flex: 1; font-size: 0.85rem; padding: 12px 10px; }
+.edition-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+
 .book-card.is-coming .book-cover { background: repeating-linear-gradient(135deg, var(--cream-2), var(--cream-2) 10px, var(--cream) 10px, var(--cream) 20px); }
 .book-card.is-coming .btn { pointer-events: none; }
-
-.edition-row { display: flex; gap: 8px; margin-top: auto; }
-.edition-row .btn { flex: 1; margin-top: 0; }
 
 /* ---------- Shirts ---------- */
 .shirt-grid {
@@ -657,6 +671,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .shirt-photo {
+  position: relative;
   aspect-ratio: 1 / 1;
   background: var(--cream-2);
   display: flex;
@@ -667,6 +682,32 @@ button { font-family: inherit; cursor: pointer; }
 
 .shirt-photo img { width: 100%; height: 100%; object-fit: cover; }
 .shirt-photo .photo-placeholder { font-family: var(--font-note); color: var(--ink-soft); text-align: center; padding: 20px; }
+
+.flip-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(251,247,238,0.92);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.swatch-row { display: flex; gap: 8px; align-items: center; margin: 2px 0 4px; }
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  padding: 0;
+  box-shadow: 1px 1px 0 var(--line);
+}
+
+.color-swatch.is-active { outline: 2px solid var(--orange); outline-offset: 2px; }
 
 .shirt-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
 .shirt-body h3 { font-family: var(--font-head); margin: 0; font-size: 1.15rem; }
