@@ -1,0 +1,763 @@
+/* ============================================================
+   LIL EGO — Design Tokens
+   Cream base / orange primary / gold secondary / ink black type
+   Display: Permanent Marker · Headings: Space Grotesk · Body: Inter
+   Sticky-note motif: Caveat (handwriting) on rotated paper cards
+   ============================================================ */
+
+:root {
+  --cream: #F6F0E3;
+  --cream-2: #EFE4CE;
+  --paper: #FBF7EE;
+  --ink: #211A14;
+  --ink-soft: #4A3F34;
+  --orange: #E35B25;
+  --orange-deep: #B8431A;
+  --gold: #AD8330;
+  --gold-light: #D9B65C;
+  --sticky: #F2D95C;
+  --sticky-shadow: rgba(33, 26, 20, 0.18);
+  --line: rgba(33, 26, 20, 0.12);
+
+  /* crystal accents — lifted from the throne pile on the book cover */
+  --crystal-purple: #6E4E9E;
+  --crystal-purple-deep: #4E3572;
+  --crystal-teal: #2C8C8A;
+  --crystal-teal-deep: #1E6664;
+  --crystal-amber: #D98F3A;
+  --sticky-pink: #F0A8A0;
+  --sticky-mint: #A9D8C8;
+  --sticky-blue: #A9C7E8;
+
+  --font-display: 'Permanent Marker', cursive;
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-note: 'Caveat', cursive;
+
+  --radius: 18px;
+  --container: 1120px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; }
+
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(246, 240, 227, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 2px solid var(--ink);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+}
+.wordmark span { color: var(--orange); }
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.nav-links a:hover { background: var(--cream-2); transform: translateY(-1px); }
+.nav-links a.is-active { background: var(--ink); color: var(--paper); }
+
+.nav-toggle { display: none; }
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+}
+
+/* ---------- Sticky note signature element ---------- */
+.sticky-note {
+  position: relative;
+  display: inline-block;
+  background: var(--sticky);
+  color: var(--ink);
+  font-family: var(--font-note);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  padding: 14px 18px 16px;
+  border-radius: 3px 14px 4px 12px / 14px 4px 16px 3px;
+  box-shadow: 0 10px 18px -8px var(--sticky-shadow), 0 2px 0 rgba(0,0,0,0.04);
+  transform: rotate(-3deg);
+}
+
+.sticky-note::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 46px;
+  height: 20px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.7);
+  transform: translateX(-50%) rotate(-4deg);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+
+.sticky-note.tilt-r { transform: rotate(2.5deg); }
+.sticky-note.tilt-flat { transform: rotate(-0.5deg); }
+.sticky-note.small { font-size: 0.95rem; padding: 10px 14px 12px; }
+
+.sticky-note.c-pink { background: var(--sticky-pink); }
+.sticky-note.c-mint { background: var(--sticky-mint); }
+.sticky-note.c-blue { background: var(--sticky-blue); }
+
+/* ---------- Floating decorative crystals + confetti dots ---------- */
+.crystal-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.crystal {
+  position: absolute;
+  clip-path: polygon(50% 0%, 100% 38%, 78% 100%, 22% 100%, 0% 38%);
+  opacity: 0.9;
+}
+
+.crystal.purple { background: linear-gradient(160deg, var(--crystal-purple), var(--crystal-purple-deep)); }
+.crystal.teal { background: linear-gradient(160deg, var(--crystal-teal), var(--crystal-teal-deep)); }
+.crystal.amber { background: linear-gradient(160deg, var(--gold-light), var(--crystal-amber)); }
+
+.confetti-dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Halftone dot texture wash — used behind hero + doors sections */
+.dot-wash {
+  background-image: radial-gradient(var(--line) 1.4px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 13px 24px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: var(--orange);
+  color: var(--paper);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { transform: translate(0, 0); box-shadow: 1px 1px 0 var(--ink); }
+
+.btn.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn.btn-gold {
+  background: var(--gold);
+}
+
+.btn[disabled], .btn.is-disabled {
+  background: var(--cream-2);
+  color: var(--ink-soft);
+  border-color: var(--line);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  padding: 108px 0 88px;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 64px;
+  align-items: center;
+}
+
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero { padding: 72px 0 56px; }
+}
+
+.eyebrow {
+  font-family: var(--font-note);
+  font-size: 1.15rem;
+  color: var(--orange-deep);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 4.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  margin: 0 0 26px;
+  color: var(--ink);
+}
+
+.hero h1 .accent {
+  color: var(--orange);
+  position: relative;
+  white-space: nowrap;
+}
+
+.hero h1 .accent svg {
+  position: absolute;
+  left: 0;
+  bottom: -14px;
+  width: 100%;
+  height: 16px;
+}
+
+.hero p.lede {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  max-width: 46ch;
+  margin: 0 0 28px;
+}
+
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* Throne / hero art placeholder */
+.hero-art {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(227,91,37,0.22), transparent 55%),
+    linear-gradient(160deg, var(--cream-2), var(--cream));
+  border: 2px dashed var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-art img { width: 100%; height: 100%; object-fit: cover; border-radius: 26px; }
+
+.hero-art .art-placeholder {
+  text-align: center;
+  font-family: var(--font-note);
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  padding: 24px;
+}
+
+.hero-art .crown {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ---------- Controlled-chaos texture kit ---------- */
+
+/* washi tape strip — pin things down, always slightly crooked */
+.tape {
+  position: absolute;
+  width: 90px;
+  height: 30px;
+  background: rgba(227, 91, 37, 0.28);
+  border: 1px solid rgba(227, 91, 37, 0.4);
+  box-shadow: 0 2px 4px rgba(33,26,20,0.08);
+  pointer-events: none;
+  z-index: 3;
+}
+.tape.gold { background: rgba(173, 131, 48, 0.3); border-color: rgba(173, 131, 48, 0.45); }
+.tape.ink { background: rgba(33, 26, 20, 0.12); border-color: rgba(33, 26, 20, 0.2); }
+
+/* coffee ring stain — one, understated, never centered */
+.coffee-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 6px solid rgba(90, 62, 30, 0.10);
+  pointer-events: none;
+  z-index: 1;
+}
+.coffee-ring::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 2px solid rgba(90, 62, 30, 0.07);
+}
+
+/* torn paper divider between sections */
+.torn-edge {
+  position: relative;
+  height: 22px;
+  background: var(--cream);
+  clip-path: polygon(
+    0% 0%, 3% 60%, 7% 10%, 11% 70%, 15% 5%, 19% 55%, 23% 15%, 27% 65%,
+    31% 8%, 35% 60%, 39% 12%, 43% 70%, 47% 5%, 51% 58%, 55% 10%, 59% 66%,
+    63% 8%, 67% 62%, 71% 14%, 75% 68%, 79% 6%, 83% 60%, 87% 12%, 91% 66%,
+    95% 8%, 100% 55%, 100% 100%, 0% 100%
+  );
+}
+
+/* handwritten margin interruption — swaps on every reload via main.js */
+.margin-note {
+  position: absolute;
+  z-index: 4;
+  font-family: var(--font-note);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--orange-deep);
+  max-width: 220px;
+  line-height: 1.2;
+  pointer-events: none;
+}
+.margin-note::before {
+  content: '';
+  position: absolute;
+  left: -34px;
+  top: 8px;
+  width: 26px;
+  height: 20px;
+  border-left: 2.5px solid var(--orange-deep);
+  border-bottom: 2.5px solid var(--orange-deep);
+  border-radius: 0 0 0 10px;
+  transform: rotate(-10deg);
+}
+
+/* crown resting on the primary CTA — Lil Ego left it there */
+.btn-crowned { position: relative; overflow: visible; }
+.btn-crowned .crown-icon {
+  position: absolute;
+  top: -22px;
+  right: 8px;
+  width: 30px;
+  height: 22px;
+  transform: rotate(-14deg);
+  transition: transform 0.2s ease;
+}
+.btn-crowned:hover .crown-icon { transform: rotate(-6deg) translateY(-3px); }
+
+/* sunglasses left behind, tucked in a corner */
+.sunglasses-doodle {
+  position: absolute;
+  width: 64px;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* gold star sticker — the kind a teacher hands out */
+.star-sticker {
+  position: absolute;
+  width: 42px;
+  pointer-events: none;
+  z-index: 4;
+  filter: drop-shadow(0 2px 2px rgba(33,26,20,0.15));
+}
+
+/* ---------- Doors grid ---------- */
+.doors { position: relative; padding: 88px 0 96px; background: var(--cream-2); }
+.doors .wrap { position: relative; }
+
+.section-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 28px;
+}
+
+.doors-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px;
+}
+
+@media (max-width: 700px) {
+  .doors-grid { grid-template-columns: 1fr; }
+}
+
+.door {
+  position: relative;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  padding: 34px 26px 26px;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 6px 6px 0 var(--line);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
+}
+
+.door:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--line);
+}
+
+/* BOOK — hardcover on a desk: thick spine, deboss lines */
+.door.is-book {
+  border-radius: 3px 10px 10px 3px;
+  padding-left: 44px;
+}
+.door.is-book::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 18px;
+  background: var(--orange-deep);
+  box-shadow: inset -3px 0 0 rgba(0,0,0,0.15);
+}
+.door.is-book::after {
+  content: '';
+  position: absolute;
+  top: 14px; bottom: 14px; left: 30px;
+  width: 1px;
+  background: repeating-linear-gradient(to bottom, var(--line) 0 6px, transparent 6px 12px);
+}
+
+/* SHIRTS — opened shipping package: crossed tape, stamp */
+.door.is-package {
+  background: var(--cream-2);
+}
+.door.is-package::before,
+.door.is-package::after {
+  content: '';
+  position: absolute;
+  background: rgba(33,26,20,0.06);
+  border: 1px dashed rgba(33,26,20,0.25);
+}
+.door.is-package::before { top: -10%; left: 46%; width: 8%; height: 120%; }
+.door.is-package::after { top: 46%; left: -10%; width: 120%; height: 8%; }
+.door .stamp {
+  position: absolute;
+  top: 18px; right: 18px;
+  border: 2px solid var(--orange-deep);
+  color: var(--orange-deep);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  transform: rotate(8deg);
+  opacity: 0.85;
+}
+
+/* WATCH — taped VHS sleeve: label sticker, corner tape */
+.door.is-tape {
+  background: var(--ink);
+  color: var(--cream);
+}
+.door.is-tape .door-top h2,
+.door.is-tape p.desc { color: var(--cream); }
+.door.is-tape .door-num { background: var(--orange); color: var(--ink); }
+.door.is-tape::before {
+  content: '';
+  position: absolute;
+  top: 16px; left: 16px; right: 16px; bottom: 16px;
+  border: 1px solid rgba(246,240,227,0.25);
+  pointer-events: none;
+}
+
+/* SCHOOL — workbook page: ruled margin lines, red rule */
+.door.is-workbook {
+  background:
+    linear-gradient(90deg, transparent 0 38px, rgba(184,67,26,0.35) 38px 40px, transparent 40px),
+    repeating-linear-gradient(to bottom, transparent 0 27px, var(--line) 27px 28px),
+    var(--paper);
+  padding-left: 52px;
+}
+
+.door-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+
+.door h2 {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.door-num {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--paper);
+  background: var(--bar-color, var(--gold));
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.door p.desc {
+  color: var(--ink-soft);
+  margin: 12px 0 18px;
+  font-size: 0.98rem;
+}
+
+.door .sticky-note {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* ---------- Generic page header (Books/Shirts/Watch) ---------- */
+.page-header {
+  padding: 52px 0 36px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: 0 0 12px;
+}
+
+.page-header p {
+  color: var(--ink-soft);
+  max-width: 60ch;
+  font-size: 1.05rem;
+}
+
+/* ---------- Books ---------- */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 28px;
+  padding: 48px 0 72px;
+}
+
+.book-card {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 6px 6px 0 var(--line);
+}
+
+.book-cover {
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(160deg, var(--cream-2), var(--gold-light) 140%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--ink);
+}
+
+.book-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+.book-cover .cover-placeholder {
+  font-family: var(--font-note);
+  font-size: 1rem;
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 20px;
+}
+
+.book-body { padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+.book-body h3 { font-family: var(--font-head); font-size: 1.2rem; margin: 0; }
+.book-body .voice-line { font-family: var(--font-note); font-size: 1.05rem; color: var(--orange-deep); margin: 0; }
+.book-body .price { font-weight: 700; margin: 4px 0 8px; }
+.book-body .btn { margin-top: auto; justify-content: center; }
+
+.book-card.is-coming .book-cover { background: repeating-linear-gradient(135deg, var(--cream-2), var(--cream-2) 10px, var(--cream) 10px, var(--cream) 20px); }
+.book-card.is-coming .btn { pointer-events: none; }
+
+/* ---------- Shirts ---------- */
+.shirt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  padding: 48px 0 72px;
+}
+
+.shirt-card {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 6px 6px 0 var(--line);
+}
+
+.shirt-photo {
+  aspect-ratio: 1 / 1;
+  background: var(--cream-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--ink);
+}
+
+.shirt-photo img { width: 100%; height: 100%; object-fit: cover; }
+.shirt-photo .photo-placeholder { font-family: var(--font-note); color: var(--ink-soft); text-align: center; padding: 20px; }
+
+.shirt-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.shirt-body h3 { font-family: var(--font-head); margin: 0; font-size: 1.15rem; }
+.shirt-body .price { font-weight: 700; }
+
+.size-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 10px; }
+
+.size-pill {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  background: var(--cream);
+}
+
+.size-pill.sold-out {
+  background: transparent;
+  color: var(--line);
+  border-color: var(--line);
+  text-decoration: line-through;
+}
+
+.shirt-body .btn { margin-top: auto; justify-content: center; }
+
+/* ---------- Watch ---------- */
+.watch-wrap { padding: 48px 0 72px; display: grid; gap: 32px; }
+
+.video-frame {
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.video-frame iframe { width: 100%; height: 100%; border: 0; }
+
+.video-frame .video-placeholder {
+  color: var(--cream);
+  font-family: var(--font-note);
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 24px;
+}
+
+.watch-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  background: var(--paper);
+}
+
+/* ---------- School teaser strip (used on homepage door + standalone) ---------- */
+.school-strip {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 40px 0;
+}
+
+.school-strip .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.school-strip h3 { font-family: var(--font-display); font-size: 1.5rem; margin: 0 0 6px; color: var(--gold-light); }
+.school-strip p { margin: 0; color: rgba(246,240,227,0.75); }
+
+/* ---------- Footer ---------- */
+.footer {
+  border-top: 2px solid var(--ink);
+  padding: 40px 0 48px;
+  background: var(--cream-2);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer small {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Utility ---------- */
+.center { text-align: center; }
+.mt-0 { margin-top: 0; }
