@@ -635,6 +635,9 @@ button { font-family: inherit; cursor: pointer; }
 .book-card.is-coming .book-cover { background: repeating-linear-gradient(135deg, var(--cream-2), var(--cream-2) 10px, var(--cream) 10px, var(--cream) 20px); }
 .book-card.is-coming .btn { pointer-events: none; }
 
+.edition-row { display: flex; gap: 8px; margin-top: auto; }
+.edition-row .btn { flex: 1; margin-top: 0; }
+
 /* ---------- Shirts ---------- */
 .shirt-grid {
   display: grid;

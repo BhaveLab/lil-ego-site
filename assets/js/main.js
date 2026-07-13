@@ -7,7 +7,13 @@
 const CONFIG = {
   // Gumroad product URLs — key matches the data-gumroad attribute in books.html
   gumroad: {
-    "audacity-of-ascension": "https://gumroad.com/l/REPLACE_ME_AUDACITY"
+    "audacity-of-ascension": "https://gumroad.com/l/REPLACE_ME_AUDACITY",
+    "dark-night-journal": "https://gumroad.com/l/REPLACE_ME_JOURNAL_DIGITAL"
+  },
+
+  // Stripe Payment Links — key matches the data-stripe attribute in books.html
+  stripeLinks: {
+    "dark-night-journal": "https://buy.stripe.com/REPLACE_ME_JOURNAL_PHYSICAL"
   },
 
   // Shirts — each item renders a card on shirts.html.
@@ -17,7 +23,7 @@ const CONFIG = {
     {
       id: "dark-night",
       name: "Dark Night",
-      price: "$38",
+      price: "$18",
       img: "/assets/img/shirt-dark-night.png",
       stripeLink: "https://buy.stripe.com/REPLACE_ME_DARK_NIGHT",
       sizes: { S: true, M: true, L: true, XL: true }
@@ -25,7 +31,7 @@ const CONFIG = {
     {
       id: "meditation-is-suspect",
       name: "Meditation Is Suspect",
-      price: "$38",
+      price: "$18",
       img: "/assets/img/shirt-meditation.png",
       stripeLink: "https://buy.stripe.com/REPLACE_ME_MEDITATION",
       sizes: { S: true, M: true, L: true, XL: true }
@@ -33,7 +39,7 @@ const CONFIG = {
     {
       id: "healing-now",
       name: "Healing Now",
-      price: "$38",
+      price: "$18",
       img: "/assets/img/shirt-healing-now.png",
       stripeLink: "https://buy.stripe.com/REPLACE_ME_HEALING_NOW",
       sizes: { S: true, M: true, L: true, XL: true }
@@ -45,6 +51,13 @@ const CONFIG = {
 document.querySelectorAll('[data-gumroad]').forEach(function (el) {
   const key = el.getAttribute('data-gumroad');
   const url = CONFIG.gumroad[key];
+  if (url) el.setAttribute('href', url);
+});
+
+// ---------- Wire up Stripe buttons on Books page ----------
+document.querySelectorAll('[data-stripe]').forEach(function (el) {
+  const key = el.getAttribute('data-stripe');
+  const url = CONFIG.stripeLinks[key];
   if (url) el.setAttribute('href', url);
 });
 
