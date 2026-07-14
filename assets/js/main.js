@@ -8,7 +8,7 @@ const CONFIG = {
   // Gumroad product URLs — key matches the data-gumroad attribute in books.html
   gumroad: {
     "audacity-of-ascension": "https://lilego.gumroad.com/l/lilego",
-    "dark-night-journal": "https://gumroad.com/l/REPLACE_ME_JOURNAL_DIGITAL"
+    "dark-night-journal": "https://lilego.gumroad.com/l/darknight"
   },
 
   // Stripe Payment Links for physical items sold outside the Shirts grid
