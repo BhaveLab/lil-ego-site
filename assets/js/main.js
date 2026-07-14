@@ -7,14 +7,15 @@
 const CONFIG = {
   // Gumroad product URLs — key matches the data-gumroad attribute in books.html
   gumroad: {
-    "audacity-of-ascension": "https://gumroad.com/l/REPLACE_ME_AUDACITY",
+    "audacity-of-ascension": "https://lilego.gumroad.com/l/lilego",
     "dark-night-journal": "https://gumroad.com/l/REPLACE_ME_JOURNAL_DIGITAL"
   },
 
   // Stripe Payment Links for physical items sold outside the Shirts grid
-  // (the journal's physical edition, self-fulfilled from held inventory)
+  // (the journal's physical edition and Audacity's paperback, self-fulfilled)
   stripeLinks: {
-    "dark-night-journal": "https://buy.stripe.com/REPLACE_ME_JOURNAL_PHYSICAL"
+    "dark-night-journal": "https://buy.stripe.com/5kQ7sKbns8x89Mr3199ws05",
+    "audacity-paperback": "https://buy.stripe.com/aFa6oG3V05kW1fV45d9ws06"
   },
 
   // Shirts — each item renders a card on shirts.html.
@@ -25,7 +26,7 @@ const CONFIG = {
       id: "dark-night",
       name: "Dark Night",
       price: "$18",
-      stripeLink: "https://buy.stripe.com/REPLACE_ME_DARK_NIGHT",
+      stripeLink: "https://buy.stripe.com/aFa3cucrw8x8cYD1X59ws02",
       colors: [
         { name: "White", front: "/assets/img/shirt-dark-night-white-front.png", back: "/assets/img/shirt-dark-night-white-back.png" },
         { name: "Black", front: "/assets/img/shirt-dark-night-black-front.png", back: "/assets/img/shirt-dark-night-black-back.png" }
@@ -36,7 +37,7 @@ const CONFIG = {
       id: "meditation-is-suspect",
       name: "Meditation Is Suspect",
       price: "$18",
-      stripeLink: "https://buy.stripe.com/REPLACE_ME_MEDITATION",
+      stripeLink: "https://buy.stripe.com/eVq28qgHMcNo3o3fNV9ws03",
       colors: [
         { name: "White", front: "/assets/img/shirt-meditation-white-front.png", back: "/assets/img/shirt-meditation-white-back.png" },
         { name: "Black", front: "/assets/img/shirt-meditation-black-front.png", back: "/assets/img/shirt-meditation-black-back.png" }
@@ -47,7 +48,7 @@ const CONFIG = {
       id: "healing-now",
       name: "Healing Now",
       price: "$18",
-      stripeLink: "https://buy.stripe.com/REPLACE_ME_HEALING_NOW",
+      stripeLink: "https://buy.stripe.com/bJeaEWajoaFg0bR0T19ws04",
       colors: [
         { name: "White", front: "/assets/img/shirt-healing-white-front.png", back: "/assets/img/shirt-healing-white-back.png" },
         { name: "Black", front: "/assets/img/shirt-healing-black-front.png", back: "/assets/img/shirt-healing-black-back.png" }
