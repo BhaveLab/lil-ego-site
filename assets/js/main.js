@@ -140,7 +140,24 @@ if (shirtGrid) {
   }
 }
 
-// ---------- Handwritten interruption — a different one on every reload ----------
+// ---------- Mobile hamburger nav ----------
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', function () {
+    const isOpen = navLinks.classList.toggle('is-open');
+    navToggle.classList.toggle('is-open', isOpen);
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  // Close menu after tapping a link
+  navLinks.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      navLinks.classList.remove('is-open');
+      navToggle.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
 const MARGIN_NOTES = [
   '"I did NOT do it."',
   '"tattling is rude, actually."',
