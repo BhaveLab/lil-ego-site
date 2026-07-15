@@ -56,6 +56,12 @@ module.exports = async function handler(req, res) {
     return;
   }
 
+  // TEMPORARY: serverElapsedMs is included on every response below so the
+  // client-side debug log (see modules/debug-reflect-log.html in
+  // lil-ego-school) can tell whether a slow/failed call was slow reaching
+  // Anthropic specifically, vs failing fast for some other reason. Remove
+  // alongside that debug page once the intermittent-failure cause is found.
+  const upstreamStartedAt = Date.now();
   try {
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -77,9 +83,10 @@ module.exports = async function handler(req, res) {
         ]
       })
     });
+    const serverElapsedMs = Date.now() - upstreamStartedAt;
 
     if (!upstream.ok) {
-      res.status(502).json({ error: 'upstream_error' });
+      res.status(502).json({ error: 'upstream_error', upstreamStatus: upstream.status, serverElapsedMs });
       return;
     }
 
@@ -91,12 +98,13 @@ module.exports = async function handler(req, res) {
       .trim();
 
     if (!reaction) {
-      res.status(502).json({ error: 'empty_reaction' });
+      res.status(502).json({ error: 'empty_reaction', serverElapsedMs });
       return;
     }
 
-    res.status(200).json({ reaction });
+    res.status(200).json({ reaction, serverElapsedMs });
   } catch (err) {
-    res.status(502).json({ error: 'upstream_error' });
+    const serverElapsedMs = Date.now() - upstreamStartedAt;
+    res.status(502).json({ error: 'upstream_error', errorMessage: err.message, serverElapsedMs });
   }
 };
