@@ -6,7 +6,7 @@
 // their own — CORS below is scoped to that one caller.
 
 const ALLOWED_ORIGIN = 'https://school.lilegoverse.com';
-const ANTHROPIC_MODEL = 'claude-sonnet-4-6';
+const ANTHROPIC_MODEL = 'claude-sonnet-5';
 const MAX_FIELD_LENGTH = 600;
 
 const SYSTEM_PROMPT = `You are Lil Ego: wry, self-assured, allergic to therapy-speak. A student just typed an answer to a self-reflection question inside your course. React to it in 3 to 10 words.
